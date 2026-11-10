@@ -4,32 +4,50 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private ScoreCounter scoreCounterReference;
-    [SerializeField] private BackgroundScroller br;
+    //[SerializeField] private BackgroundScroller br;
 
-    public float moveSpeed = 10.0f;
-    public InputActionReference playerMove;
+    [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private float jumpForce = 10f;
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private Transform feetpos;
+    [SerializeField] private float groundDistance = 0.25f;
+    [SerializeField] private float jumpTime = 0.3f;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
+    private bool isGrounded = false;
+    private bool isJumping = false;
+    private float jumpTimer;
     void Update()
     {
-        transform.Translate(playerMove.action.ReadValue<Vector2>() * moveSpeed * Time.deltaTime);
-    }
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.gameObject.CompareTag("Obstacle"))
+        isGrounded = Physics2D.OverlapCircle(feetpos.position, groundDistance, groundLayer);
+
+        if (isGrounded && Input.GetButtonDown("Jump"))
         {
-            Destroy(gameObject);
-            if (scoreCounterReference != null)
+            isJumping = true;
+            rb.linearVelocity = Vector2.up * jumpForce;
+        }
+
+        if (isJumping && Input.GetButton("Jump"))
+        {
+            if (jumpTimer < jumpTime)
             {
-                scoreCounterReference.StopScoring();
-                br.scrollSpeed = 0;
+                rb.linearVelocity = Vector2.up * jumpForce;
+                jumpTimer += Time.deltaTime;
+            }
+            else
+            {
+                isJumping = false;
             }
         }
+
+        if (Input.GetButtonUp("Jump"))
+        {
+            isJumping = false;
+            jumpTimer = 0;
+        }
     }
+
+
+
+
+
 }
