@@ -5,6 +5,9 @@ public class ScoreCounter : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI HighScore;
     public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI coinText;
+
+    public int numberOfCoins = 0;
     public float pointsPerSecond = 100f;
 
     private float currentScore = 0f;
