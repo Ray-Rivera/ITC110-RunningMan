@@ -7,11 +7,14 @@ public class PlayerController : MonoBehaviour
     //[SerializeField] private BackgroundScroller br;
 
     [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private Transform GFX;
     [SerializeField] private float jumpForce = 10f;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Transform feetpos;
     [SerializeField] private float groundDistance = 0.25f;
     [SerializeField] private float jumpTime = 0.3f;
+
+    [SerializeField] private float crouchHeight = 0.5f;
 
     private bool isGrounded = false;
     private bool isJumping = false;
@@ -44,8 +47,24 @@ public class PlayerController : MonoBehaviour
             isJumping = false;
             jumpTimer = 0;
         }
-    }
 
+        if (isGrounded && Input.GetButton("Crouch"))
+        {
+            GFX.localScale = new Vector3(GFX.localScale.x, crouchHeight, GFX.localScale.z);
+
+            if (isJumping)
+            {
+                GFX.localScale = new Vector3(GFX.localScale.x, 1f, GFX.localScale.z);
+            }
+
+        }
+
+        if (Input.GetButtonUp("Crouch"))
+        {
+            GFX.localScale = new Vector3(GFX.localScale.x, 1f, GFX.localScale.z);
+        }
+
+    }
 
 
 
