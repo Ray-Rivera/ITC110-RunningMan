@@ -16,7 +16,6 @@ public class BackgroundScroller : MonoBehaviour
         collider.enabled = false;
 
         rb.linearVelocity = new Vector2(scrollSpeed, 0);
-        ResetObstacle();
 
     }
 
@@ -27,12 +26,8 @@ public class BackgroundScroller : MonoBehaviour
         {
             Vector2 resetPosition = new Vector2(width * 2f, 0);
             transform.position = (Vector2)transform.position + resetPosition;
-            ResetObstacle();
         }
     }
 
-    void ResetObstacle()
-    {
-        transform.GetChild(0).localPosition = new Vector3(1, Random.Range(-3, 3), 0);
-    }
+
 }
